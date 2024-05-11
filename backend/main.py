@@ -1,6 +1,7 @@
 import database as db
 import json
 from fastapi import FastAPI, HTTPException
+from fastapi import Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -21,9 +22,6 @@ class Person(BaseModel):
     tel: str
 
 def convert_to_json(data):
-    if len(data) < 6:
-        print("Invalid data")
-        return {}
     res = {"people": []}
     for d in data:
         res["people"].append({"id": d[0], "fname": d[1], "lname": d[2], "city": d[3], "email": d[4], "tel": d[5]})
