@@ -1,4 +1,5 @@
 import database as db
+import json
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -23,8 +24,11 @@ def convert_to_json(data):
     if len(data) < 6:
         print("Invalid data")
         return {}
-    
-    return {"id": data[0], "fname": data[1], "lname": data[2], "city": data[3], "email": data[4], "tel": data[5]}
+    res = {"people": []}
+    for d in data:
+        res["people"].append({"id": d[0], "fname": d[1], "lname": d[2], "city": d[3], "email": d[4], "tel": d[5]})
+
+    return res
 
 @app.get("/")
 async def root():
@@ -58,11 +62,11 @@ async def add_person(person: Person):
     return {"message": "success"}
 
 @app.put("/person")
-async def edit_person(fname: str, lname: str, person: Person):
+async def edit_person(first_name: str, last_name: str, person: Person):
     
     to_params = [
-        fname,
-        lname
+        first_name,
+        last_name
     ]
 
     to_data = [

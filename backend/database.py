@@ -1,6 +1,6 @@
 import psycopg2 as pg
 
-con_str = "host=cornelius.db.elephantsql.com database=gdufqwah user=gdufqwah password=0w4x7F00Tz-BdT2B1Ab_a4600C1ZCfSL port = 5432"
+con_str = "host=cornelius.db.elephantsql.com dbname=gdufqwah user=gdufqwah password=0w4x7F00Tz-BdT2B1Ab_a4600C1ZCfSL port = 5432"
 
 def view_people() -> list:
     
@@ -10,16 +10,16 @@ def view_people() -> list:
         with pg.connect(con_str) as con:
             with con.cursor() as cur:
 
-                cur.execute("SELECT * FROM \"pulbic\".\"person\"")
+                cur.execute("SELECT * FROM \"public\".\"person\"")
 
                 rows = cur.fetchall()
 
-                res_row = ""
+                res_row = []
 
                 for row in rows:
-                    res_row = ""
+                    res_row = []
                     for r in row:
-                        res_row += str(r) + ";"
+                        res_row.append(r)
                     res.append(res_row)
 
     except(Exception, pg.DatabaseError) as err:
@@ -72,7 +72,9 @@ def edit_person(params:list, data:list) -> int:
     try:
         with pg.connect(con_str) as con:
             with con.cursor() as cur:
-                cur.execute("UPDATE \"public\".\"person\" SET fname = %s, lname = %s, city = %s, email = %s, tel = %s WHERE fname = %s AND lname = %s", tuple(data.extend(params)))
+                data.extend(params)
+                print(data)
+                cur.execute("UPDATE \"public\".\"person\" SET fname = %s, lname = %s, city = %s, email = %s, tel = %s WHERE fname = %s AND lname = %s", tuple(data))
 
                 row_count = cur.rowcount
 
@@ -92,7 +94,7 @@ def edit_person(params:list, data:list) -> int:
 #     try:
 #         with pg.connect(con_str) as con:
 #             with con.cursor() as cur:
-#                 cur.execute("SELECT * FROM \"pulbic\".\"person\" WHERE fname = %s AND lname = %s", tuple(params))
+#                 cur.execute("SELECT * FROM \"public\".\"person\" WHERE fname = %s AND lname = %s", tuple(params))
 
 #                 rows = cur.fetchall()
 
