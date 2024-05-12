@@ -1,22 +1,50 @@
 <template>
     <div class="backdrop" @click.self="closeModal">
-        <div class="modal" :class="{sale: theme === 'sale'}">
-            <!-- <h1>{{header}}</h1>
-            <p>{{text}}</p> -->
-            <h1>{{person.fname}}</h1> <!--only shows when no modules are present-->
+        <div class="modal" v-if="!edit">
+            <h1>{{person.fname + ' ' + person.lname}}</h1>
+            <h3>
+                {{person.city}}
+            </h3>
+            <h3>
+                {{(person.email != null) ? person.email : "No email"}}
+            </h3>
+            <h3>
+                {{(person.tel != null) ? person.tel : "No telephone"}}
+            </h3>
+        </div>
+        <div class="modal" v-else>
+            <AddPeopleForm :person="person" @done="closeModal">
+                <template v-slot:title>
+                    <h1>
+                        Edit {{person.fname}}
+                    </h1>
+                </template>
+            </AddPeopleForm>
         </div>
     </div>
 </template>
 
 <script>
+import AddPeopleForm from '@/components/AddPeopleForm.vue'
+
 export default {
     props: {
-        person: {}
+        person: {},
+        edit: false
+    },
+    components: {
+        AddPeopleForm
     },
     methods: {
         closeModal()
         {
-            this.$emit('close')
+            if(!this.edit){
+                this.$emit('close')
+            }
+            else{
+                this.$emit('edit')
+                this.$emit('reload')
+            }
         }
     }
 }
@@ -29,6 +57,8 @@ export default {
         margin: 100px auto;
         background: white;
         border-radius: 10px;
+        display: flex;
+        flex-direction: column;
     }
     .backdrop{
         top: 0;

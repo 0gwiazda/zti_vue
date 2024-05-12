@@ -1,5 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>Żubr</h1>
+    <img src="https://home.agh.edu.pl/~ggolasz/zubr.jpg" alt="" srcset="">
   </div>
 </template>

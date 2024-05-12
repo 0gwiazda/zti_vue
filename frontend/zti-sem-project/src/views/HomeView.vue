@@ -1,21 +1,12 @@
 <template>
   <div class="home">
-    <People/>
-    <div class="tele">
-        
-    </div>
+    <img src="@/assets/logo.png" alt="" srcset="">
+    <h1>Simple CRUD Application with Vue</h1>
   </div>
 </template>
 
 <script>
-import People from "@/components/People.vue"
 
-export default {
-  name: 'HomeView',
-  components: {
-    People
-  }
-}
 </script>
 
 <style>

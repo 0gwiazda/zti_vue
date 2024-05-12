@@ -9,7 +9,7 @@
                     <button @click="showModal(person)">
                         Show
                     </button>
-                    <button @click="handleEdit">
+                    <button @click="handleEdit(person)">
                         Edit
                     </button>
                     <button @click="handleDelete(person)">
@@ -24,13 +24,14 @@
             </h2>
         </div>
         <teleport to='.tele' v-if="show">
-            <PeopleModal :person="chosen" @close="showModal"/>
+            <PeopleModal :person="chosen" :edit="edit" @close="showModal" @edit="showEdit" @reload="loadPeople"/>
         </teleport>
     </div>
 </template>
 
 <script>
 import PeopleModal from "@/components/PeopleModal.vue"
+import AddPeopleForm from '@/components/AddPeopleForm.vue'
 const BASE_URL = "http://localhost:3000"
 
 export default {
@@ -38,18 +39,20 @@ export default {
         return{
             loading: true,
             show: false,
+            edit: false,
             people: [],
             chosen: {},
         }
     },
     components:{
-        PeopleModal
+        PeopleModal,
+        AddPeopleForm
     },
     mounted(){
         this.loadPeople()
     },
     methods: {
-        loadPeople()
+        async loadPeople()
         {
             fetch(BASE_URL + "/person")
             .then((res) => res.json())
@@ -60,16 +63,16 @@ export default {
             })
             .catch((err) => {console.log(err.message)})
         },
-        handleEdit()
+        handleEdit(person)
         {
-
+            this.showEdit(person)
         },
-        handleDelete(person)
+        async handleDelete(person)
         {
             const uri = "?fname=" + encodeURIComponent(person.fname)
                         + "&lname=" + encodeURIComponent(person.lname)
 
-            fetch(BASE_URL + "/person" + uri, {
+            await fetch(BASE_URL + "/person" + uri, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
@@ -77,7 +80,13 @@ export default {
                 })
             .catch((err) => console.log(err.message))
 
-            this.loadPeople()
+            await this.loadPeople()
+        },
+        async showEdit(person){
+            this.chosen = person
+            this.edit = !this.edit
+            this.show = !this.show
+            await this.loadPeople()
         },
         showModal(person)
         {
