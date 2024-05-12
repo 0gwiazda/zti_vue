@@ -121,4 +121,13 @@ export default {
     button:active {
     background-color: #388e3c;
     }
+
+    .person {
+        margin: auto;
+        max-width: 450px;
+        margin-bottom: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        background: #f2f2f2;
+    }
 </style>

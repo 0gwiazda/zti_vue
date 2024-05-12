@@ -12,10 +12,10 @@
             <input type="text" name="" id="city" required v-model="newPerson.city">
 
             <label>Email:</label>
-            <input type="email" name="" id="email" v-model="newPerson.email">
+            <input type="email" name="" id="email" required v-model="newPerson.email">
 
             <label>Telephone:</label>
-            <input type="text" name="" id="tel" v-model="newPerson.tel">
+            <input type="text" name="" id="tel" required v-model="newPerson.tel">
 
             <button type="submit">Send</button>
         </form>
@@ -50,14 +50,14 @@ export default {
         }
     },
     methods: {
-        onSubmit(){
+        async onSubmit(){
             if(this.isEdit)
             {
                 const uri = "?first_name=" + encodeURIComponent(this.person.fname)
                             + "&last_name=" + encodeURIComponent(this.person.lname)
                 console.log(uri)
                 console.log(this.newPerson)
-                fetch(BASE_URL + "/person/" + uri, {
+                await fetch(BASE_URL + "/person/" + uri, {
                     method: "PUT",
                     headers:{
                         "Content-Type":"application/json"
@@ -68,7 +68,7 @@ export default {
             }
             else
             {
-                fetch(BASE_URL + "/person", {
+                await fetch(BASE_URL + "/person", {
                     method: "POST",
                     headers:{
                         "Content-Type":"application/json"

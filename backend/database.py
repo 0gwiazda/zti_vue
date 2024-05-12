@@ -86,28 +86,3 @@ def edit_person(params:list, data:list) -> int:
         print(err)
     finally:
         return row_count
-
-# def view_person(params:list) -> list:
-
-#     res = []
-
-#     try:
-#         with pg.connect(con_str) as con:
-#             with con.cursor() as cur:
-#                 cur.execute("SELECT * FROM \"public\".\"person\" WHERE fname = %s AND lname = %s", tuple(params))
-
-#                 rows = cur.fetchall()
-
-#                 res_row = ""
-
-#                 for row in rows:
-#                     res_row = ""
-#                     for r in row:
-#                         res_row += str(r) + ";"
-#                     res.append(res_row)
-    
-#     except(Exception, pg.DatabaseError) as err:
-#         print(err)
-#         res.append(0)
-#     finally:
-#         return res
